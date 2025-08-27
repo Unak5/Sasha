@@ -1,20 +1,16 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Предложение</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    body {
-      overflow: hidden;
-    }
-    .runaway {
-      position: relative;
-    }
+    body { overflow: hidden; }
     .heart {
       position: absolute;
       font-size: 2rem;
       animation: floatUp 3s linear forwards;
+      pointer-events: none;
     }
     @keyframes floatUp {
       0% { transform: translateY(0) scale(1); opacity: 1; }
@@ -26,25 +22,26 @@
   <div class="text-center p-8 bg-white rounded-2xl shadow-xl max-w-xl relative">
     <h1 class="text-3xl font-bold text-pink-600 mb-4">💖 Дорогая 💖</h1>
     <p class="text-lg mb-6">Олександра Олександровна,</p>
-    <h2 class="text-2xl font-semibold text-pink-7400 mb-6">
+    <h2 class="text-2xl font-semibold text-pink-700 mb-6">
       Готова ли ты вступить в брак с Юнак Сергей Сергеевичем
       и быть самой счастливой женой на свете? 💍
     </h2>
-    
+
     <div class="flex gap-4 justify-center relative">
       <!-- Кнопка "ДА" -->
-      <button 
-        onclick="yesAnswer()" 
-        class="px-6 py-3 bg-pink-500 text-white rounded-xl shadow hover:bg-pink-600 transition">
+      <button
+        onclick="yesAnswer()"
+        class="px-6 py-3 bg-pink-500 text-white rounded-xl shadow hover:bg-pink-600 transition"
+        aria-label="Да">
         Да 💕
       </button>
 
       <!-- Кнопка "НЕТ" -->
-      <button 
-        id="noBtn"
+      <button
         onclick="noAnswer()"
-        class="px-6 py-3 bg-gray-300 text-gray-700 rounded-xl shadow runaway">
-        Нет(неверно)
+        class="px-6 py-3 bg-gray-300 text-gray-700 rounded-xl shadow"
+        aria-label="Нет">
+        Нет (неверно)
       </button>
     </div>
 
@@ -52,27 +49,18 @@
   </div>
 
   <script>
-    const noBtn = document.getElementById("noBtn");
-
-    // Кнопка "Нет" убегает при наведении
-    noBtn.addEventListener("mouseenter", () => {
-      const x = Math.random() * (window.innerWidth - noBtn.offsetWidth - 50);
-      const y = Math.random() * (window.innerHeight - noBtn.offsetHeight - 50);
-      noBtn.style.position = "absolute";
-      noBtn.style.left = `${x}px`;
-      noBtn.style.top = `${y}px`;
-    });
-
     // Ответ "Да"
     function yesAnswer() {
       const answer = document.getElementById("answer");
-      answer.innerText = "Я и не сомневался";
+      answer.innerText = "Я и не сомневался 💖";
       spawnHearts();
     }
 
-    // Ответ "Нет" (если вдруг поймает кнопку)
+    // Ответ "Нет" — считаем как "Да"
     function noAnswer() {
-      document.getElementById("answer").innerText = "Что ты клацаешь";
+      const answer = document.getElementById("answer");
+      answer.innerText = "Что ты клацаешь, мы все равно засчитываем ваш ответ как Да)";
+      spawnHearts(); // тоже запускаем сердечки
     }
 
     // Летящие сердечки
@@ -80,14 +68,11 @@
       for (let i = 0; i < 15; i++) {
         const heart = document.createElement("div");
         heart.classList.add("heart");
-        heart.innerText = "❤️";
+        heart.textContent = "❤️";
         heart.style.left = Math.random() * window.innerWidth + "px";
         heart.style.top = window.innerHeight + "px";
         document.body.appendChild(heart);
-
-        setTimeout(() => {
-          heart.remove();
-        }, 3000);
+        setTimeout(() => heart.remove(), 3000);
       }
     }
   </script>
